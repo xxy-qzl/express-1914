@@ -6,12 +6,15 @@
 const mongoose = require('mongoose')
 
 
-// 自定义一个地址（按照接口文档的地址来，不然出错了我估计你要凉）
+// 连接数据库的地址，mongodb的端口号是27017，后面那个express代表的是你要创建的数据库的名字，这个你随意
 const uri = 'mongodb://127.0.0.1:27017/express'
 
 
 // 通过mongoose.connect()方法去连接数据库，该方法会返回一个promise对象，所以你懂的  .then(成功该做的事).catch(失败该做的事)
-mongoose.connect(uri).then(() => {
+mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
     console.log('数据库连接成功')
 }).catch(error => {
     console.log('数据库连接失败')
