@@ -151,6 +151,48 @@ app.post('/api/users', async (req, res) => {
 
 
 
+// 用户登录
+app.post('/api/login', async (req, res) => {
+    let username = req.body.username
+    let password = req.body.password
+
+    // 1.先判断该用户是否存在
+
+    const user = await UserModel.findOne({
+        username
+    })
+    // console.log(user)
+    if (!user) {
+        res.send({
+            code: -1,
+            msg: "该用户不存在"
+        })
+        return
+    }
+
+    // 2.如果该用户存在，在比较他们的密码
+    const isOk = await bcryptjs.compare(password, user.password)
+    if (isOk) {
+        res.send({
+            code: 0,
+            msg: "登录成功",
+            data: {
+                userId: user._id,
+                username: user.username
+            }
+        })
+    } else {
+        res.send({
+            code: -1,
+            msg: "密码错误"
+        })
+    }
+
+
+})
+
+
+
 
 
 
