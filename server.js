@@ -5,6 +5,8 @@ const app = express()
 
 // 引入新增文章那个表的model文件（post model）
 const PostModel = require('./models/post')
+// 引入用户注册那个表的model文件（user model）
+const UserModel = require('./models/user')
 
 
 // 要用req.body 必须使用它的两个中间件
@@ -116,6 +118,26 @@ app.put('/api/posts/:id/update', async (req, res) => {
     }, req.body)
 
     // 响应
+    res.send({
+        code: 0,
+        msg: "OK"
+    })
+})
+
+
+
+// 用户注册
+app.post('/api/users', async (req, res) => {
+    // console.log(req.body)
+
+    // 如何将数据插入到数据库？
+    // 1.先获取传入的实例
+    const user = new UserModel(req.body)
+
+    // 将拿到是数据写入数据库
+
+    await user.save()
+
     res.send({
         code: 0,
         msg: "OK"
