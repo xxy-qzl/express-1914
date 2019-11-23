@@ -2,10 +2,16 @@
 const mongoose = require('../conf/db')
 
 
-// 我要实例化一个schema对象，里面的东西是我对这张数据库表的参数的要求
+// 我要实例化一个schema对象，里面的东西是我对这张数据库表的参数的要求，这里我们要求必须传参所以 required 为true
 const schema = new mongoose.Schema({
-    title: String,
-    body: String
+    title: {
+        type: String,
+        required: true
+    },
+    body: {
+        type: String,
+        required: true
+    }
 })
 
 // 我要生成一个名为 post 的 model 也就是表，用于文章新增
