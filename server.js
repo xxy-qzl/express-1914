@@ -82,6 +82,7 @@ app.get('/api/posts', async (req, res) => {
 })
 
 
+
 // 文章删除
 app.delete('/api/posts/:id', async (req, res) => {
     // 1.获取需要删除的文章的id
@@ -98,6 +99,7 @@ app.delete('/api/posts/:id', async (req, res) => {
         msg: "OK"
     })
 })
+
 
 
 // 文章修改
