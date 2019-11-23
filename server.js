@@ -1,5 +1,6 @@
 // 引入之前下好的express
 const express = require('express')
+const bcryptjs = require('bcryptjs')
 const app = express()
 
 
@@ -128,11 +129,15 @@ app.put('/api/posts/:id/update', async (req, res) => {
 
 // 用户注册
 app.post('/api/users', async (req, res) => {
-    // console.log(req.body)
-
     // 如何将数据插入到数据库？
     // 1.先获取传入的实例
-    const user = new UserModel(req.body)
+    let username = req.body.username
+    let password = req.body.password
+    password = await bcryptjs.hash(password, 12)
+    const user = new UserModel({
+        username,
+        password
+    })
 
     // 将拿到是数据写入数据库
 
