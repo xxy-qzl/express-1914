@@ -1,6 +1,7 @@
 // 引入之前下好的express
 const express = require('express')
 const bcryptjs = require('bcryptjs')
+const path = require('path')
 const app = express()
 
 
@@ -8,6 +9,10 @@ const app = express()
 const PostModel = require('./models/post')
 // 引入用户注册那个表的model文件（user model）
 const UserModel = require('./models/user')
+
+// 使用哪些模板引擎，模板页面的存放路径
+app.set('view engine', 'ejs')
+app.set('views', path.resolve(__dirname, './views'))
 
 
 // 要用req.body 必须使用它的两个中间件
@@ -189,6 +194,38 @@ app.post('/api/login', async (req, res) => {
     }
 
 
+})
+
+
+
+// 文章列表页
+app.get('/posts', async (req, res) => {
+    // 1.获取分页参数
+    let pageNum = Number(req.query.pageNum || 1)
+    let pageSize = Number(req.query.pageSize || 5)
+
+    // 2.获取数据
+    const posts = await PostModel.find().skip((pageNum - 1) * pageSize).limit(pageSize)
+    const count = await PostModel.find().countDocuments()
+    const totalPages = Math.ceil(count / pageSize)
+    res.render('post/index', {
+        posts,
+        totalPages,
+        pageNum
+    })
+    console.log(posts)
+})
+
+
+// 文章新增页
+app.get('/posts/create', async (req, res) => {
+    res.render('post/create')
+})
+
+
+// 文章详情页
+app.get('/posts/:id', async (req, res) => {
+    res.render('post/show')
 })
 
 
